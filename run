@@ -1,2 +1,5 @@
-javac com/craftinginterpreters/lox/*.java
-java com.craftinginterpreters.lox.Lox
+rm com/craftinginterpreters/lox/*.class &&
+    javac com/craftinginterpreters/tool/GenerateAst.java &&
+    java com.craftinginterpreters.tool.GenerateAst com/craftinginterpreters/lox &&
+    javac com/craftinginterpreters/lox/*.java &&
+    java com.craftinginterpreters.lox.Lox
