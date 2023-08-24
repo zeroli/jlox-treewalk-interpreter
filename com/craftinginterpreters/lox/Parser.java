@@ -30,6 +30,11 @@ class Parser {
      *                   ;
      * printStmt    -> "print" expression ";"
      *                   ;
+     * expression  -> assignment
+     *                  ;
+     * assignment   -> IDENTIFIER "=" assignment
+     *                      | equality
+     *                      ;
      * primary      -> "true" | "false" | "nil"
      *                  | NUMBER | STRING
      *                  | "(" expression ")"
@@ -46,7 +51,7 @@ class Parser {
     }
 
     private Expr expression() {
-        return equality();
+        return assignment();
     }
 
     private Stmt declaration() {
@@ -88,6 +93,22 @@ class Parser {
         return new Stmt.Expression(expr);
     }
 
+    private Expr assignment() {
+        Expr expr = equality();
+
+        if (match(EQUAL)) {
+            Token equals = previous();
+            Expr value = assignment();  // right recursive
+
+            if (expr instanceof Expr.Variable) {
+                Token name = ((Expr.Variable)expr).name;
+                return new Expr.Assign(name, value);
+            }
+            error(equals, "Invalid assignment target.");
+        }
+        return expr;
+    }
+
     private Expr equality() {
         Expr expr = comparison();
 
@@ -115,6 +136,7 @@ class Parser {
     private Expr term() {
         Expr expr = factor();
 
+        // left recursive, convert it to while loop
         while (match(MINUS, PLUS)) {
             Token operator = previous();
             Expr right = factor();
