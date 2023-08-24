@@ -24,12 +24,15 @@ class Parser {
      * varDecl      -> "var" IDENTIFIER ( "=" expression )? ";"
      *                  ;
      * statement -> exprStmt
-     *                  |  printStmt
+     *                  | printStmt
+     *                  | block
      *                  ;
      * exprStmt     -> expression ";"
      *                   ;
      * printStmt    -> "print" expression ";"
      *                   ;
+     * block         -> "{" declaration* "}"
+     *                  ;
      * expression  -> assignment
      *                  ;
      * assignment   -> IDENTIFIER "=" assignment
@@ -65,6 +68,9 @@ class Parser {
     }
     private Stmt statement() {
         if (match(PRINT)) return printStatement();
+        if (match(LEFT_BRACE)) {
+            return new Stmt.Block(block());
+        }
 
         return expressionStatement();
     }
@@ -91,6 +97,17 @@ class Parser {
         Expr expr = expression();
         consume(SEMICOLON, "Expect ':' after expression.");
         return new Stmt.Expression(expr);
+    }
+
+    private List<Stmt> block() {
+        List<Stmt> statements = new ArrayList<>();
+
+        while (!check(RIGHT_BRACE) && !isAtEnd()) {
+            statements.add(declaration());
+        }
+
+        consume(RIGHT_BRACE, "Expect '}' after block.");
+        return statements;
     }
 
     private Expr assignment() {
