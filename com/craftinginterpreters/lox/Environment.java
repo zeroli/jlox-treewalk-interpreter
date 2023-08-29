@@ -39,9 +39,17 @@ class Environment {
         }
         if (enclosing != null) {
             enclosing.assign(name, value);
+            return;
         }
 
         throw new RuntimeError(name,
             "Undefined variable '" + name.lexeme + "'.");
+    }
+
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        values.forEach((k, v) ->
+            builder.append(k + " => " + v.toString()));
+        return builder.toString();
     }
 }
