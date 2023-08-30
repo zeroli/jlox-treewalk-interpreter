@@ -63,7 +63,8 @@ class Parser {
      *                      ;
      * factor           -> unary (("*" | "/") unary)*
      *                      ;
-     * unary            -> ("-" | "~")? primary
+     * unary            -> ("-" | "~") unary
+     *                      | primary
      *                      ;
      * primary      -> "true" | "false" | "nil"
      *                  | NUMBER | STRING
