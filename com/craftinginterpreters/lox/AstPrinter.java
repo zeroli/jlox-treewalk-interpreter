@@ -38,6 +38,11 @@ class AstPrinter implements Expr.Visitor<String> {
     }
 
     @Override
+    public String visitCallExpr(Expr.Call expr) {
+        return parenthesize("call", expr);
+    }
+
+    @Override
     public String visitAssignExpr(Expr.Assign expr) {
         Expr.Variable var = new Expr.Variable(expr.name);
         return parenthesize("=", var, expr.value);

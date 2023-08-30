@@ -1,6 +1,7 @@
 package com.craftinginterpreters.lox;
 
 import java.util.List;
+import java.util.ArrayList;
 
 class Interpreter implements Expr.Visitor<Object>,
                                         Stmt.Visitor<Void>
@@ -254,7 +255,7 @@ class Interpreter implements Expr.Visitor<Object>,
             arguments.add(evaluate(argument));
         }
 
-        if (!(callee instance of LoxCallable)) {
+        if (!(callee instanceof LoxCallable)) {
             throw new RuntimeError(expr.paren,
                     "Can only call functions and classes.");
         }

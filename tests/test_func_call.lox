@@ -1,0 +1,8 @@
+fun foo() {
+    print "hello function";
+}
+
+foo();
+
+var foo_f = foo;
+foo_f();
