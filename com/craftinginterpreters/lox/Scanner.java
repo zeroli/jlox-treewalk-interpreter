@@ -104,7 +104,7 @@ class Scanner {
                 } else if (isAlpha(c)) {
                     identifier();
                 } else {
-                    Lox.error(line, "Unexpected character.");
+                    Lox.error(line, "Unexpected character: '" + c + "'");
                 }
                 break;
         }
@@ -188,7 +188,7 @@ class Scanner {
 
     private boolean isAlpha(char c) {
         return (c >= 'a' && c <= 'z') ||
-                (c >= 'A' && c >= 'Z') ||
+                (c >= 'A' && c <= 'Z') ||
                 (c == '_');
     }
     private boolean isAlphaNumeric(char c) {
