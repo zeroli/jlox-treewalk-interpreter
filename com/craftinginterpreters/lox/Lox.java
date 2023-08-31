@@ -73,13 +73,19 @@ public class Lox {
         System.err.println(
             "[line " + line + "] Error" + where + ": " + message);
         hadError = true;
+        /*
+        System.err.println("Stack trace:");
+        StackTraceElement[] stackTraces = Thread.currentThread().getStackTrace();
+        for (int i = 1; i < stackTraces.length; i++) {
+            System.err.println(stackTraces[i]);
+        }*/
     }
 
     static void error(Token token, String message) {
         if (token.type == TokenType.EOF) {
-        report(token.line, " at end", message);
+            report(token.line, " at end", message);
         } else {
-        report(token.line, " at '" + token.lexeme + "'", message);
+            report(token.line, " at '" + token.lexeme + "'", message);
         }
     }
 
